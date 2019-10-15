@@ -1,0 +1,43 @@
+<images>
+
+	<image>
+		<name>N1.png</name>
+		<time>04:00</time>
+	</image>
+
+	<image>
+		<name>N2.png</name>
+		<time>07:00</time>
+	</image>
+
+	<image>
+		<name>N3.png</name>
+		<time>10:00</time>
+	</image>
+
+	<image>
+		<name>N4.png</name>
+		<time>13:00</time>
+	</image>
+
+	<image>
+		<name>N5.png</name>
+		<time>16:00</time>
+	</image>
+
+	<image>
+		<name>N6.png</name>
+		<time>19:00</time>
+	</image>
+
+	<image>
+		<name>N7.png</name>
+		<time>22:00</time>
+	</image>
+
+	<image>
+		<name>N8.png</name>
+		<time>23:00</time>
+	</image>
+
+</images>
