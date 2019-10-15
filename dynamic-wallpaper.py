@@ -24,16 +24,31 @@ def loadXML(filename):
 	return images
 
 def getCurrentImage(imagelist, time):
+
 	current_image = imagelist[-1]
-	for image in imagelist:
-		if(time.hour <= image.time.hour):
-			if(time.hour == image.time.hour):
-				current_image = image
+	current_image_index = len(imagelist) - 1
+
+	for index in range(0, len(imagelist)):
+		if(time.hour <= imagelist[index].time.hour):
+			if(time.hour == imagelist[index].time.hour):
+				current_image = imagelist[index]
+				current_image_index = index
 			break
-		current_image = image
-	return current_image
+		current_image = imagelist[index]
+		current_image_index = index
 
+	return current_image, current_image_index
 
+def getTimeToNextImage(image, time):
+	if(time.hour > image.time.hour):
+		test = 24 - time.hour + image.time.hour
+	else:
+		test = image.time.hour - time.hour
+	
+	return test
+
+def hoursToSeconds(hour):
+	return hour * 60 * 60
 
 def setWallpaper(filepath, plugin = 'org.kde.image'):
     jscript = """
@@ -51,19 +66,45 @@ def setWallpaper(filepath, plugin = 'org.kde.image'):
     plasma.evaluateScript(jscript % (plugin, plugin, filepath))
 
 
-scheduler = sched.scheduler(time.time, time.sleep)
 WALLPAPER_PATH = "/home/navis/Pictures/Wallpapers/Firewatch\ Dynamic/"
 imagelist = loadXML('images.xml')
 
 #now = datetime.datetime.now()
-now = datetime.time(8)
+now = datetime.time(16)
 print("NOW: " + str(now.hour) + ":" + str(now.minute))
 
+
+'''
 for i in range(0, 24):
 	time.sleep(1)
 	now = datetime.time(i)
-	print(getCurrentImage(imagelist, now))
-	current_image = getCurrentImage(imagelist, now)
+	current_image, index = getCurrentImage(imagelist, now)
+	print(str(now.hour) + " " + str(current_image))
 	setWallpaper(WALLPAPER_PATH + current_image.name)
+'''
+list = [0, 8, 10, 15, 19, 20, 22, 00, 1]
+i = 0
 
+while(True):
+
+	now = datetime.time(list[i])
+	i = i + 1
+	if(i == len(list)):
+		i = 0
+
+	print("NOW: " + str(now.hour) + ":" + str(now.minute))
+
+	current_image, current_image_index = getCurrentImage(imagelist, now)
+	setWallpaper(WALLPAPER_PATH + current_image.name)
+	print(current_image)
+
+	if(current_image_index == len(imagelist) - 1):
+		print(imagelist[0])
+		timenext = getTimeToNextImage(imagelist[0], now)
+	else:
+		print(imagelist[current_image_index + 1])
+		timenext = getTimeToNextImage(imagelist[current_image_index + 1], now)
+
+	print("Aspetto: " + str(timenext) + " secondi")
+	time.sleep(timenext)
 
