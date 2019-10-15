@@ -82,16 +82,10 @@ for i in range(0, 24):
 	print(str(now.hour) + " " + str(current_image))
 	setWallpaper(WALLPAPER_PATH + current_image.name)
 '''
-list = [0, 8, 10, 15, 19, 20, 22, 00, 1]
-i = 0
+
 
 while(True):
-
-	now = datetime.time(list[i])
-	i = i + 1
-	if(i == len(list)):
-		i = 0
-
+	now = datetime.datetime.now()
 	print("NOW: " + str(now.hour) + ":" + str(now.minute))
 
 	current_image, current_image_index = getCurrentImage(imagelist, now)
@@ -106,5 +100,5 @@ while(True):
 		timenext = getTimeToNextImage(imagelist[current_image_index + 1], now)
 
 	print("Aspetto: " + str(timenext) + " secondi")
-	time.sleep(timenext)
+	time.sleep(hoursToSeconds(timenext))
 
