@@ -1,3 +1,3 @@
 #!/bin/sh
-python /home/navis/workspace/dynamic-wallpaper/dynamic-wallpaper.py
+python ./dynamic-wallpaper.py $1
 
