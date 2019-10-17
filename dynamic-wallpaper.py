@@ -81,7 +81,8 @@ while(True):
 
 	secondsWait = hoursToSeconds(timenext)
 	intervals = secondsWait / 60
-
+	time.sleep(3)
+	'''
 	for interval in range(0, int(intervals)):
 		time.sleep(60)
 		time_passed = datetime.timedelta(seconds = 60)
@@ -91,7 +92,7 @@ while(True):
 
 		if((now_delta + time_passed) < new_time_delta):
 			break
-
+	'''
 		
 
 

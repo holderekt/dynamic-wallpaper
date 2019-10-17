@@ -1,3 +1,5 @@
 #!/bin/sh
-python ./dynamic-wallpaper.py $1
+FOLDER_PATH=$1
+SCRIPT_PATH=$(dirname "$0")
+python $SCRIPT_PATH/dynamic-wallpaper.py $FOLDER_PATH
 
