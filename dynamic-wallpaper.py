@@ -1,9 +1,9 @@
-import sched
 import time
 import dbus
 import random
 import xml.etree.ElementTree as ET
 import datetime
+import sys
 
 class Image:
 	def __init__(self, name, times):
@@ -14,7 +14,7 @@ class Image:
 		return self.name + " " + str(self.time.hour)
 
 def loadXML(filename):
-	tree = ET.parse('images.xml')
+	tree = ET.parse(filename)
 	root = tree.getroot()
 	images = []
 
@@ -50,55 +50,51 @@ def getTimeToNextImage(image, time):
 def hoursToSeconds(hour):
 	return hour * 60 * 60
 
-def setWallpaper(filepath, plugin = 'org.kde.image'):
-    jscript = """
+def setWallpaper(filepath):
+    script = """
     var allDesktops = desktops();
-    print (allDesktops);
     for (i=0;i<allDesktops.length;i++) {
         d = allDesktops[i];
-        d.wallpaperPlugin = "%s";
-        d.currentConfigGroup = Array("Wallpaper", "%s", "General");
+        d.wallpaperPlugin = "org.kde.image";
+        d.currentConfigGroup = Array("Wallpaper", "org.kde.image", "General");
         d.writeConfig("Image", "file://%s")
     }
     """
     bus = dbus.SessionBus()
     plasma = dbus.Interface(bus.get_object('org.kde.plasmashell', '/PlasmaShell'), dbus_interface='org.kde.PlasmaShell')
-    plasma.evaluateScript(jscript % (plugin, plugin, filepath))
+    plasma.evaluateScript(script % (filepath))
 
 
-WALLPAPER_PATH = "/home/navis/Pictures/Wallpapers/Firewatch\ Dynamic/"
-imagelist = loadXML('images.xml')
-
-#now = datetime.datetime.now()
-now = datetime.time(16)
-print("NOW: " + str(now.hour) + ":" + str(now.minute))
-
-
-'''
-for i in range(0, 24):
-	time.sleep(1)
-	now = datetime.time(i)
-	current_image, index = getCurrentImage(imagelist, now)
-	print(str(now.hour) + " " + str(current_image))
-	setWallpaper(WALLPAPER_PATH + current_image.name)
-'''
-
+PATH = sys.argv[1] + "/"
+imagelist = loadXML(PATH + "images.xml")
 
 while(True):
 	now = datetime.datetime.now()
-	print("NOW: " + str(now.hour) + ":" + str(now.minute))
 
 	current_image, current_image_index = getCurrentImage(imagelist, now)
-	setWallpaper(WALLPAPER_PATH + current_image.name)
-	print(current_image)
+	setWallpaper(PATH + current_image.name)
 
 	if(current_image_index == len(imagelist) - 1):
-		print(imagelist[0])
 		timenext = getTimeToNextImage(imagelist[0], now)
 	else:
-		print(imagelist[current_image_index + 1])
 		timenext = getTimeToNextImage(imagelist[current_image_index + 1], now)
 
-	print("Aspetto: " + str(timenext) + " secondi")
-	time.sleep(hoursToSeconds(timenext))
+	secondsWait = hoursToSeconds(timenext)
+	intervals = secondsWait / 60
+
+	for interval in range(0, int(intervals)):
+		time.sleep(60)
+		time_passed = datetime.timedelta(seconds = 60)
+		new_now = datetime.datetime.now()
+		now_delta = datetime.timedelta(hours = now.hour, minutes = now.minute, seconds = now.second)
+		new_time_delta = datetime.timedelta(hours = new_now.hour, minutes = new_now.minute, seconds = new_now.second - 5)
+
+		if((now_delta + time_passed) < new_time_delta):
+			break
+
+		
+
+
+
+	
 
