@@ -1,11 +1,11 @@
 # dynamic-wallpaper
-A shitty python script made to emulate Mojave dynamic wallpapers on KDE. It works bad, its not that good on performace, but it does the job.  
+A python script made to emulate Mojave dynamic wallpapers on KDE. 
 
 <p align="center">
 <img src="https://media.giphy.com/media/hW9hfkGAbfMcN4LXoU/giphy.gif">
 </p>
 
-### How to use this shit
+### How to use
 - Find some images
 - Store those images inside a folder with a file named **image.xml**
 - Modify the XML file stating a name and time for each image (the time indicates when the image swap will occur)
