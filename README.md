@@ -1,4 +1,4 @@
-# dynamic-wallpaper
+# Dynamic Wallpapers for KDE
 A python script made to emulate Mojave dynamic wallpapers on KDE. 
 
 <p align="center">
